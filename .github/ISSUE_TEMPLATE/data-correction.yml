@@ -1,0 +1,81 @@
+name: データ修正の報告
+description: sagebase上のデータに誤りを見つけた場合にご利用ください
+title: "[修正] "
+labels: ["data-correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        データの誤りのご報告ありがとうございます。以下の項目をできる範囲でご記入ください。
+
+  - type: input
+    id: sagebase_id
+    attributes:
+      label: sagebase_id
+      description: "対象データのsagebase_id（わかる場合）。例: pol_550e8400-e29b-41d4-a716-446655440000"
+      placeholder: "pol_550e8400-e29b-41d4-a716-446655440000"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: data_type
+    attributes:
+      label: データ種別
+      options:
+        - 政治家
+        - 政党
+        - 議案・法案
+        - 発言・議事録
+        - 選挙・選挙結果
+        - 会派
+        - その他
+    validations:
+      required: true
+
+  - type: dropdown
+    id: error_type
+    attributes:
+      label: 誤りの種類
+      options:
+        - 属性の誤り（名前、日付、所属等）
+        - 紐づけの誤り（人物と発言、議案と賛否等）
+        - データの重複
+        - データの欠落（一部が抜けている）
+        - その他
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_value
+    attributes:
+      label: 現在の値
+      description: 現在表示されている誤った内容を記入してください
+      placeholder: "例: 政治家「山田太郎」の所属政党が「A党」になっている"
+    validations:
+      required: true
+
+  - type: textarea
+    id: correct_value
+    attributes:
+      label: 正しい値
+      description: 修正後の正しい値を記入してください
+      placeholder: "例: 正しくは「B党」（2025年4月に移籍）"
+    validations:
+      required: true
+
+  - type: input
+    id: source_url
+    attributes:
+      label: 根拠URL
+      description: 正しい値の根拠となる公式サイト等のURL（任意）
+      placeholder: "https://..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_info
+    attributes:
+      label: 補足情報
+      description: その他補足があれば記入してください
+    validations:
+      required: false

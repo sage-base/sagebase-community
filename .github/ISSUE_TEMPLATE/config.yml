@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: sage-base.com
+    url: https://sage-base.com
+    about: sagebase プロダクトサイト
+  - name: BigQuery 公開データセット
+    url: https://console.cloud.google.com/bigquery?project=sage-base-sagebase
+    about: BigQuery 上の公開データセットにアクセス

@@ -1,0 +1,71 @@
+name: データ追加のリクエスト
+description: sagebaseにまだ収録されていないデータの追加をリクエストできます
+title: "[追加] "
+labels: ["data-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        データ追加のリクエストありがとうございます。以下の項目をできる範囲でご記入ください。
+
+  - type: dropdown
+    id: data_type
+    attributes:
+      label: データ種別
+      options:
+        - 議会・会議体
+        - 議事録・発言
+        - 議案・法案
+        - 選挙・選挙結果
+        - 政治家
+        - 政党・会派
+        - その他
+    validations:
+      required: true
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: 対象範囲
+      options:
+        - 国会（衆議院）
+        - 国会（参議院）
+        - 都道府県議会
+        - 市区町村議会
+        - その他
+    validations:
+      required: true
+
+  - type: textarea
+    id: request_detail
+    attributes:
+      label: リクエスト内容
+      description: 追加してほしいデータの詳細を記入してください
+      placeholder: "例: 〇〇市議会の2024年度議事録と議案賛否データ"
+    validations:
+      required: true
+
+  - type: input
+    id: data_source
+    attributes:
+      label: データソースURL
+      description: データが掲載されている公式サイト等のURL（任意）
+      placeholder: "https://..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: use_case
+    attributes:
+      label: 利用目的
+      description: このデータをどのように利用したいか教えていただけると優先度の判断に役立ちます（任意）
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_info
+    attributes:
+      label: 補足情報
+      description: その他補足があれば記入してください
+    validations:
+      required: false
