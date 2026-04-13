@@ -48,6 +48,11 @@ sagebase上の全レコードには `sagebase_id` という一意の識別子が
 | `spk` | 発言者 | `spk_...` |
 | `cnv` | 発言 | `cnv_...` |
 
+## ドキュメント
+
+- [sagebase_id について](docs/sagebase-id.md) - データ識別子の詳細
+- [データカバレッジ](docs/data-coverage.md) - 収集しているデータの範囲
+
 ## リンク
 
 - [sage-base.com](https://sage-base.com) - プロダクトサイト
