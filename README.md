@@ -16,12 +16,27 @@
 | 選挙結果 | 衆院選・参院選 | 総務省選挙関連資料 |
 | 政治家情報 | 国会議員 | 各政党公式サイト等 |
 | 会派情報 | 衆議院・参議院 | 国会公式サイト |
+| 委員会構成 | 衆議院・参議院 | 国会公式サイト |
+| 議事録・発言 | 京都市議会・豊橋市議会 | kaigiroku.net |
 
 ### 公開データセット
 
 BigQuery 上で公開データセットとして利用できます:
-- `sage-base-sagebase.sagebase` (メインビュー)
-- `sage-base-sagebase.sagebase_raw_vault` (Data Vault)
+- `sagebase-gcp.sagebase` (メインビュー)
+- `sagebase-gcp.sagebase_raw_vault` (Data Vault)
+- `sagebase-gcp.sagebase_mart` (分析用マート)
+
+## ロードマップ
+
+今後のデータ拡充計画は [Milestones](https://github.com/sage-base/sagebase-community/milestones) で公開しています。
+
+| Milestone | 概要 |
+|-----------|------|
+| [全47都道府県議会の会議データ取得](https://github.com/sage-base/sagebase-community/milestone/1) | 全都道府県の議会会議録を取得・公開 |
+| [政令指定都市議会の会議データ取得](https://github.com/sage-base/sagebase-community/milestone/2) | 全20政令指定都市の議会会議録を取得・公開 |
+| [地方議会の議案・賛否データ取得](https://github.com/sage-base/sagebase-community/milestone/3) | 地方議会の議案・記名投票データを取得・公開 |
+
+追加してほしいデータがあれば、[データ追加リクエスト](https://github.com/sage-base/sagebase-community/issues/new?template=data-request.yml)からお知らせください。リクエストは今後の計画に反映されます。
 
 ## データに問題を見つけたら
 
@@ -56,4 +71,4 @@ sagebase上の全レコードには `sagebase_id` という一意の識別子が
 ## リンク
 
 - [sage-base.com](https://sage-base.com) - プロダクトサイト
-- [BigQuery 公開データセット](https://console.cloud.google.com/bigquery?project=sage-base-sagebase) - データセット
+- [BigQuery 公開データセット](https://console.cloud.google.com/bigquery?project=sagebase-gcp) - データセット
