@@ -93,12 +93,17 @@ LIMIT 10
 
 ### 会派ごとの議案賛否件数（会派レベル）
 
+`proposal_vote_records` は「議案 × 判断者 (会派)」単位の投票記録で、`judgment`（賛成/反対/…）と
+`group_name` を持ちます。`proposal_vote_parliamentary_groups` は投票記録と会派マスタを結ぶ中間表です。
+
 ```sql
 SELECT
   pg.name AS parliamentary_group,
-  pvg.judgment,
+  pvr.judgment,
   COUNT(*) AS votes
 FROM `my_proj.sagebase_linked.proposal_vote_parliamentary_groups` AS pvg
+JOIN `my_proj.sagebase_linked.proposal_vote_records` AS pvr
+  ON pvg.judge_id = pvr.id
 JOIN `my_proj.sagebase_linked.parliamentary_groups` AS pg
   ON pvg.parliamentary_group_id = pg.id
 GROUP BY parliamentary_group, judgment
