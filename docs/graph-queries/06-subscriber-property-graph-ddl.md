@@ -162,10 +162,10 @@ EDGE TABLES (
     SOURCE KEY (source_sid) REFERENCES nodes_election (sagebase_id)
     DESTINATION KEY (dest_sid) REFERENCES nodes_governing_body (sagebase_id)
     LABEL HELD_FOR PROPERTIES (source_sid, dest_sid, election_date),
-  <LINKED_DATASET>.edges_composed_of KEY (source_sid, dest_sid)
+  <LINKED_DATASET>.edges_composed_of KEY (sagebase_id)
     SOURCE KEY (source_sid) REFERENCES nodes_parliamentary_group (sagebase_id)
     DESTINATION KEY (dest_sid) REFERENCES nodes_political_party (sagebase_id)
-    LABEL COMPOSED_OF PROPERTIES (source_sid, dest_sid, is_primary),
+    LABEL COMPOSED_OF PROPERTIES (sagebase_id, start_date, end_date, is_current, is_primary),
   <LINKED_DATASET>.edges_discussed_in KEY (sagebase_id)
     SOURCE KEY (source_sid) REFERENCES nodes_proposal (sagebase_id)
     DESTINATION KEY (dest_sid) REFERENCES nodes_meeting (sagebase_id)

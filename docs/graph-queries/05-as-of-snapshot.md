@@ -146,6 +146,45 @@ LIMIT 20
 
 ---
 
+## Part C: as-of 会派⇔政党構成（`COMPOSED_OF`・期間型）
+
+`COMPOSED_OF` は `MEMBER_OF` と同じ期間型 (`start_date` / `end_date` / `is_current`) で公開しています。
+`MEMBER_OF` と同型の as-of 述語で「ある日付時点の会派の政党構成」を復元できます。
+
+> **過去履歴の制限**: 本エッジは Type-2 SCD 観測台帳（`snapshot_parliamentary_group_parties`）
+> 経由で生成されます。台帳導入日以降の変更のみ捕捉するため、それ以前の pgp 遷移は
+> Part C では復元できません（源泉 PG に永続化された値の diff を nightly でしか捕捉していないため）。
+
+### プレーン SQL
+
+```sql
+-- 国会 2024-12-12 時点の各会派の構成政党（期間述語で as-of スナップショット）
+SELECT pg.name AS group_name, pp.name AS party_name, co.is_primary
+FROM `sagebase-gcp.sagebase_graph.edges_composed_of` AS co
+JOIN `sagebase-gcp.sagebase_graph.nodes_parliamentary_group` AS pg ON co.source_sid = pg.sagebase_id
+JOIN `sagebase-gcp.sagebase_graph.nodes_political_party` AS pp ON co.dest_sid = pp.sagebase_id
+JOIN `sagebase-gcp.sagebase_graph.edges_belongs_to_gb` AS bg ON bg.source_sid = pg.sagebase_id
+JOIN `sagebase-gcp.sagebase_graph.nodes_governing_body` AS gb ON bg.dest_sid = gb.sagebase_id
+WHERE gb.name = '国会'
+  AND DATE '2024-12-12' BETWEEN co.start_date AND COALESCE(co.end_date, DATE '9999-12-31')
+ORDER BY group_name, co.is_primary DESC, party_name
+LIMIT 40
+```
+
+### GQL
+
+```sql
+GRAPH `sagebase-gcp.sagebase_graph.politics`
+MATCH (pg:ParliamentaryGroup)-[co:COMPOSED_OF]->(pp:PoliticalParty),
+      (pg)-[:BELONGS_TO_GB]->(gb:GoverningBody {name: "国会"})
+WHERE DATE '2024-12-12' BETWEEN co.start_date AND COALESCE(co.end_date, DATE '9999-12-31')
+RETURN pg.name AS group_name, pp.name AS party_name, co.is_primary
+ORDER BY group_name, co.is_primary DESC, party_name
+LIMIT 40
+```
+
+---
+
 ## 実測メトリクス（`--use_cache=false`・asia-northeast1・オンデマンド）
 
 | クエリ | slot_ms（目安） | 課金バイト |
@@ -155,3 +194,5 @@ LIMIT 20
 | Part B 正準 SQL（個人採決・国会 scoped） | 数十〜数百 | 50 MB 前後 |
 | Part B 同型 SQL（会派採決・国会 scoped） | 数百 | 50 MB 前後 |
 | Part B 同型 GQL（会派採決・国会 scoped） | 数百 | 250 MB（固定） |
+| Part C SQL（会派⇔政党構成 as-of） | 数十 | 40 MB 前後 |
+| Part C GQL（会派⇔政党構成 as-of） | 数十 | 250 MB（固定） |
