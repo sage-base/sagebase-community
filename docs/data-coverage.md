@@ -46,7 +46,7 @@ sagebase が現在収集・公開しているデータの範囲です。カバ�
 | 議案（proposals） | 12.6 万件超 |
 | 議案賛否（proposal_judges・個人集計） | 13.2 万件超 |
 | 議案賛否（proposal_vote_parliamentary_groups・会派単位） | 1.6 万件超 |
-| 議案記名投票（proposal_vote_records・生記録） | 197 万件超 |
+| 議案 × 判断者単位の投票記録（proposal_vote_records） | 197 万件超 |
 | 選挙（elections） | 3.4 万件超 |
 
 （数値は 2026-07 時点の目安。最新は BQ `__TABLES__` の row_count が正。）
