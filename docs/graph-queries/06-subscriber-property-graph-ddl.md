@@ -197,7 +197,24 @@ EDGE TABLES (
     SOURCE KEY (source_sid) REFERENCES nodes_parliamentary_group (sagebase_id)
     DESTINATION KEY (dest_sid) REFERENCES nodes_vote_event (sagebase_id)
     LABEL GROUP_POSITION
-    PROPERTIES (sagebase_id, judgment, member_count, judge_type, attribution_rule)
+    PROPERTIES (sagebase_id, judgment, member_count, judge_type, attribution_rule),
+  -- 会議主宰・出席: 議事録冒頭 regex 抽出源。Phase 1 は国会のみ、地方議会は今後拡充。
+  <LINKED_DATASET>.edges_presided KEY (sagebase_id)
+    SOURCE KEY (source_sid) REFERENCES nodes_politician (sagebase_id)
+    DESTINATION KEY (dest_sid) REFERENCES nodes_meeting (sagebase_id)
+    LABEL PRESIDED
+    PROPERTIES (
+      sagebase_id, meeting_date, position, matching_confidence, source,
+      is_manually_verified
+    ),
+  <LINKED_DATASET>.edges_attended KEY (sagebase_id)
+    SOURCE KEY (source_sid) REFERENCES nodes_politician (sagebase_id)
+    DESTINATION KEY (dest_sid) REFERENCES nodes_meeting (sagebase_id)
+    LABEL ATTENDED
+    PROPERTIES (
+      sagebase_id, meeting_date, status, role_category, matching_confidence,
+      source, is_manually_verified
+    )
 )
 ```
 
@@ -225,9 +242,9 @@ WHERE property_graph_name = 'politics'
 > 権限や参照制約で 2-(A) が失敗した場合に備え、購読者が**リンク先テーブルを自 dataset へ CTAS で
 > 物理コピー**してから PROPERTY GRAPH を定義する代替手順を用意しています。
 
-### B-1. 30 テーブルを CTAS で物理コピー
+### B-1. 32 テーブルを CTAS で物理コピー
 
-linked dataset の全要素テーブル（ノード 9 + エッジ 21 = 30 本）を `<MY_DATASET>` にコピーする。
+linked dataset の全要素テーブル（ノード 9 + エッジ 23 = 32 本）を `<MY_DATASET>` にコピーする。
 `bq` でループ実行する例:
 
 ```bash
@@ -244,6 +261,7 @@ TABLES=(
   edges_group_submitted edges_conference_submitted edges_part_of edges_belongs_to_gb
   edges_held_by edges_held_for edges_composed_of edges_discussed_in edges_deliberated_by
   edges_decides edges_held_at edges_cast_vote edges_group_position
+  edges_presided edges_attended
 )
 
 for t in "${TABLES[@]}"; do
