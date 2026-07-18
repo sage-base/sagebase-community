@@ -3,6 +3,7 @@ contact_links:
   - name: sage-base.com
     url: https://sage-base.com
     about: sagebase プロダクトサイト
-  - name: BigQuery 公開データセット
-    url: https://console.cloud.google.com/bigquery?project=sage-base-sagebase
-    about: BigQuery 上の公開データセットにアクセス
+  - name: BigQuery Analytics Hub (公開データセット購読)
+    url: https://console.cloud.google.com/bigquery/analytics-hub
+    about: sagebase_data / sagebase_graph_data リスティングを検索・購読
+
