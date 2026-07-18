@@ -26,6 +26,7 @@ GQL は「Enterprise 予約がある購読者向けの付加価値 + 技術シ�
 | [03](03-defection-analysis.md) | 会派方針との乖離（造反）分析 | `VOTED_ON.is_defection` × `MEMBER_OF` | 政治記者・選挙アナリスト |
 | [04](04-deliberation-path.md) | 議案の審議経路追跡 | `DISCUSSED_IN` / `DELIBERATED_BY` | 立法過程研究者・政策ウォッチャー |
 | [05](05-as-of-snapshot.md) | as-of スナップショット | `MEMBER_OF` + `GROUP_VOTED_ON` | 時系列分析者・歴史研究者 |
+| [07](07-vote-events.md) | VoteEvent 経由の採決追跡 | `CAST_VOTE` / `GROUP_POSITION` / `DECIDES` / `HELD_AT` | 立法過程研究者・政治学者 |
 | [可視化](visualization.md) | BigQuery Studio / NetworkX 可視化手順 | — | 全購読者 |
 
 ## 設計原則（クエリを書くときの約束）

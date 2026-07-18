@@ -94,7 +94,12 @@ NODE TABLES (
       deliberation_status, deliberation_result, submitted_date, voted_date, detail_url
     ),
   <LINKED_DATASET>.nodes_election KEY (sagebase_id) LABEL Election
-    PROPERTIES (sagebase_id, name, term_number, election_date, election_type, office)
+    PROPERTIES (sagebase_id, name, term_number, election_date, election_type, office),
+  <LINKED_DATASET>.nodes_vote_event KEY (sagebase_id) LABEL VoteEvent
+    PROPERTIES (
+      sagebase_id, voted_date, vote_type, result, stage, legislative_session,
+      matching_confidence, is_llm_extracted
+    )
 )
 EDGE TABLES (
   -- 所属系（期間型 is_current 付き）
@@ -173,7 +178,26 @@ EDGE TABLES (
   <LINKED_DATASET>.edges_deliberated_by KEY (sagebase_id)
     SOURCE KEY (source_sid) REFERENCES nodes_proposal (sagebase_id)
     DESTINATION KEY (dest_sid) REFERENCES nodes_conference (sagebase_id)
-    LABEL DELIBERATED_BY PROPERTIES (sagebase_id, stage)
+    LABEL DELIBERATED_BY PROPERTIES (sagebase_id, stage),
+  -- VoteEvent 系: 採決 reify。既存 edges_voted_on / edges_group_voted_on は購読者互換のため温存。
+  <LINKED_DATASET>.edges_decides KEY (sagebase_id)
+    SOURCE KEY (source_sid) REFERENCES nodes_vote_event (sagebase_id)
+    DESTINATION KEY (dest_sid) REFERENCES nodes_proposal (sagebase_id)
+    LABEL DECIDES PROPERTIES (sagebase_id, stage, voted_date),
+  <LINKED_DATASET>.edges_held_at KEY (sagebase_id)
+    SOURCE KEY (source_sid) REFERENCES nodes_vote_event (sagebase_id)
+    DESTINATION KEY (dest_sid) REFERENCES nodes_meeting (sagebase_id)
+    LABEL HELD_AT PROPERTIES (sagebase_id, voted_date),
+  <LINKED_DATASET>.edges_cast_vote KEY (sagebase_id)
+    SOURCE KEY (source_sid) REFERENCES nodes_politician (sagebase_id)
+    DESTINATION KEY (dest_sid) REFERENCES nodes_vote_event (sagebase_id)
+    LABEL CAST_VOTE
+    PROPERTIES (sagebase_id, approve, is_defection, parliamentary_group_sid, attribution_rule, source_type),
+  <LINKED_DATASET>.edges_group_position KEY (sagebase_id)
+    SOURCE KEY (source_sid) REFERENCES nodes_parliamentary_group (sagebase_id)
+    DESTINATION KEY (dest_sid) REFERENCES nodes_vote_event (sagebase_id)
+    LABEL GROUP_POSITION
+    PROPERTIES (sagebase_id, judgment, member_count, judge_type, attribution_rule)
 )
 ```
 
@@ -201,9 +225,9 @@ WHERE property_graph_name = 'politics'
 > 権限や参照制約で 2-(A) が失敗した場合に備え、購読者が**リンク先テーブルを自 dataset へ CTAS で
 > 物理コピー**してから PROPERTY GRAPH を定義する代替手順を用意しています。
 
-### B-1. 25 テーブルを CTAS で物理コピー
+### B-1. 30 テーブルを CTAS で物理コピー
 
-linked dataset の全要素テーブル（ノード 8 + エッジ 17 = 25 本）を `<MY_DATASET>` にコピーする。
+linked dataset の全要素テーブル（ノード 9 + エッジ 21 = 30 本）を `<MY_DATASET>` にコピーする。
 `bq` でループ実行する例:
 
 ```bash
@@ -214,11 +238,12 @@ LOC=asia-northeast1
 
 TABLES=(
   nodes_politician nodes_political_party nodes_parliamentary_group nodes_governing_body
-  nodes_conference nodes_meeting nodes_proposal nodes_election
+  nodes_conference nodes_meeting nodes_proposal nodes_election nodes_vote_event
   edges_member_of edges_member_of_conference edges_affiliated_with edges_ran_in
   edges_spoke_in edges_voted_on edges_group_voted_on edges_submitted
   edges_group_submitted edges_conference_submitted edges_part_of edges_belongs_to_gb
   edges_held_by edges_held_for edges_composed_of edges_discussed_in edges_deliberated_by
+  edges_decides edges_held_at edges_cast_vote edges_group_position
 )
 
 for t in "${TABLES[@]}"; do
