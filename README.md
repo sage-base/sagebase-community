@@ -153,6 +153,47 @@ sagebase 上の全レコードには `sagebase_id` という一意の識別子�
 | `cvs` | 発言 |
 | `prp` | 議案 |
 
+## ライセンスと利用条件
+
+sagebase が公開するデータは、出自の異なる二つの層でできています。
+
+**sagebase が付与した層** — テーブル/ノード/エッジの構造、正規化された名称・日付、名寄せ結果（政治家・会派・会議体の同定）、`sagebase_id`、集計値、`matching_confidence` 等の品質メタデータ、本リポジトリのドキュメント — は **[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.ja)** で提供します。出典を表示していただければ、商用・非商用を問わず、複製・再配布・加工・データベースとしての再構築が自由にできます（CC BY 4.0 はデータベース権も明示的にカバーします）。
+
+**議会等が公開した情報の層** — 議事録の発言原文、議案の本文・件名、採決結果の記載など — は各議会の公開条件に由来します。sagebase はこの部分にライセンスを付与する立場になく、原文を大量に再配布する用途（発言テキストのコーパス公開等）では、出典元の議会が定める利用条件をご自身でご確認ください。
+
+### 出典表示の推奨形式
+
+そのまま利用する場合:
+
+```
+出典: Sagebase（一般社団法人政治ベース）https://sage-base.com/ — CC BY 4.0
+```
+
+加工して利用する場合:
+
+```
+一般社団法人政治ベース「Sagebase」（https://sage-base.com/）を加工して作成。
+ライセンス: CC BY 4.0（https://creativecommons.org/licenses/by/4.0/deed.ja）
+```
+
+学術論文・レポートで引用する場合は、データが随時更新されるため参照日（または BigQuery のスナップショット日時）を添えてください。表示スペースが限られる場合の短縮形を含め、詳しくは[利用規約 第 3 条](https://sage-base.com/terms/#3-出典表示の推奨形式)に記載しています。
+
+### 免責
+
+本データの相当部分は、LLM による抽出・名寄せを含む自動処理を経て作られており、**誤りは残ります**。重要な判断・報道・研究の根拠とする前に、一次情報（各議会の公開する議事録等）と照合してください。
+
+名寄せ結果を含むテーブルには `matching_confidence` / `min_matching_confidence` / `all_verified` などの品質列を用意しています。低信頼のマッチを確定した事実として扱わないよう、これらの列を条件に含めてご利用ください。また、スキーマは用意されていても値の投入が段階的なカラム・テーブルがあります（造反フラグが全行 NULL、提出者エッジが 0 行など）。「該当なし」と「未反映」は区別してご解釈ください。
+
+本データは現状有姿（AS IS）で提供され、正確性・完全性・特定目的への適合性を保証しません。
+
+### 削除・訂正の依頼
+
+- **データの誤り**: [データ修正の報告](../../issues/new?template=data-correction.yml)からご報告ください
+- **ご自身に関する情報の削除・訂正**（議事録に由来して氏名等が掲載されている方ご本人・代理人の方）: 件名に **【削除・訂正依頼】** と記載のうえ [info@sage-base.org](mailto:info@sage-base.org) までご連絡ください。判断の考え方・必要な情報・回答の目安期間は[プライバシーポリシー 第 5 条](https://sage-base.com/privacy/#5-削除訂正の依頼)に記載しています。**公開の GitHub Issue ではなくメールでお願いします**
+- **権利侵害の申し立て**: [info@sage-base.org](mailto:info@sage-base.org)
+
+正式な条件は[利用規約](https://sage-base.com/terms/)と[プライバシーポリシー](https://sage-base.com/privacy/)をご確認ください。要約は[ライセンスページ](https://sage-base.com/license/)にあります。
+
 ## ドキュメント
 
 - [sagebase_id について](docs/sagebase-id.md) - データ識別子の詳細
@@ -163,3 +204,4 @@ sagebase 上の全レコードには `sagebase_id` という一意の識別子�
 
 - [sage-base.com](https://sage-base.com) - プロダクトサイト
 - [BigQuery Analytics Hub コンソール](https://console.cloud.google.com/bigquery/analytics-hub) - リスティング検索・購読
+- [利用規約](https://sage-base.com/terms/) / [ライセンス（要約）](https://sage-base.com/license/) / [プライバシーポリシー](https://sage-base.com/privacy/)
