@@ -1,6 +1,29 @@
 Creative Commons Attribution 4.0 International License (CC BY 4.0)
 
-Copyright (c) 2026 sage-base
+Copyright (c) 2026 一般社団法人政治ベース (Sagebase)
+
+SCOPE / 適用範囲
+
+This license covers the material that sagebase itself created: the documents in
+this repository, and the structure, normalization, entity-resolution results,
+graph nodes/edges, sagebase_id identifiers, aggregates, and quality metadata of
+the published datasets.
+
+It does NOT cover the underlying source material published by Japanese
+assemblies -- verbatim minutes of proceedings, bill texts, and the wording of
+recorded votes. Those remain subject to the publication conditions set by each
+assembly, and sagebase is not in a position to license them. If you intend to
+redistribute the verbatim source text at scale, check the conditions of the
+originating assembly yourself.
+
+See https://sage-base.com/terms/ for the full terms (Japanese).
+
+本ライセンスは sagebase が独自に付与した部分（本リポジトリのドキュメント、公開
+データセットの構造・正規化・名寄せ結果・グラフ・sagebase_id・集計値・品質メタ
+データ）に適用されます。議事録の発言原文など各議会が公開した情報そのものは適用
+対象外で、各議会の公開条件に従います。詳細は https://sage-base.com/terms/
+
+---
 
 You are free to:
 
